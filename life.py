@@ -47,8 +47,6 @@ class Life:
         neighbour_count += top + left + right + bottom
 
         return neighbour_count
-
-        print(f'how many neighbours ({row},{column}) has: {neighbour_count}')
         
 
     def step(self):
