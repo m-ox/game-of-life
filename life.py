@@ -7,7 +7,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation as fa
-import time
 
 class Life:
     def __init__(self, size):
@@ -83,6 +82,7 @@ class Life:
         self.grid = neo_grid         
 
 
+# below is the animate function that repeats the game step process
 def animate(f):
     game.step()
     im.set_array(game.grid)
