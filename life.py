@@ -5,10 +5,11 @@
 # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction
 
 import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation as fa
 import time
 
 class Life:
-    
     def __init__(self, size):
         self.size = size
 
@@ -79,28 +80,50 @@ class Life:
                     if check == 3:
                         neo_grid[i,j] = 1
 
-        # a cool framerate of 1 second between changes
-        time.sleep(1/2)
-
         self.grid = neo_grid         
 
 
+def animate(f):
+    game.step()
+    im.set_array(game.grid)
+
+    return im,
+
+
 def main():
+    global im, game
+    fig, ax = plt.subplots(1, 1)
+
     size = input("What size of game would you like? >> ")
     if size == '':
         game = Life(25) # default grid is 25 by 25
+    elif int(size) > 100:
+        print('I am not letting you blow up your computer today. Defaulted to 100.')
+        game = Life(100)
     else:
         game = Life(int(size))
+        
+    im = ax.imshow(game.grid, animated=True)
 
-    counter = int(input("How long do you want the game to last? (#iterations) >> "))
+    counter = input("How long do you want the game to last? (#iterations) >> ")
+    if counter == '':
+        counter = 5
+    else:
+        counter = int(counter)
 
-    while counter > 0:
-        game.step()
-        counter -= 1
+    while np.sum(game.grid) > 0:
+        anim = fa(fig, animate, frames=counter, interval=200, blit=True, repeat=False)
+        counter -= 0
+        plt.show()
 
         if np.sum(game.grid) == 0:
             print("The game of life ended in total annihilation!")
             break
+
+        if counter == 0:
+            print("The game of life has ended!")
+
+    plt.show()
 
 
 if __name__ == "__main__":main()
